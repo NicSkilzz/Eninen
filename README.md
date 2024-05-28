@@ -3,5 +3,5 @@
 ## Main Tasks
 
  - UI (OpenGL?)
- - Chess Board
+ - Chess Board (array + field class)
  - Character
