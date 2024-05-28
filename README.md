@@ -2,6 +2,6 @@
 
 ## Main Tasks
 
- - UI
+ - UI (OpenGL?)
  - Chess Board
  - Character
