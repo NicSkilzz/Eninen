@@ -1,7 +1,10 @@
+#pragma once
+#include "chess_board.h"
+
 class Board {
 
     private:
-        Piece* board_array[8][8];
+        Piece* board_array[BOARD_LENGTH][BOARD_LENGTH];
 
     public:
         Board();

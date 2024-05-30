@@ -3,8 +3,8 @@
 
 
 ChessBoard::Board() {
-    for (unsigned i = 0; i < 8; i++) {
-        for (unsigned j = 0; j < 8; j++) {
+    for (unsigned i = 0; i < BOARD_LENGTH; i++) {
+        for (unsigned j = 0; j < BOARD_LENGTH; j++) {
             this->board_array[i][j] = nullptr;
         }
     }
