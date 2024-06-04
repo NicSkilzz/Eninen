@@ -1,8 +1,8 @@
 #pragma once
-#include "chess_board.h"
+#include "chess_board.hpp"
+#include "macros.hpp"
 
 class Board {
-
     private:
         Piece* board_array[BOARD_LENGTH][BOARD_LENGTH];
 
@@ -13,8 +13,5 @@ class Board {
         void move_piece(int source_rank, int source_file, int target_rank, int target_file);
         void set_piece(int rank, int file, Piece * piece);
         void clean_up();
-
-}
-
-
-void setup_rank(int color);
+        void setup_rank(int color);
+};

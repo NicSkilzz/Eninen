@@ -7,6 +7,7 @@ bool do_move(Board * board, int color);
 int main() {
     bool running = true;
     Board board();
+    board.setup()
 
     int color;
     while (running) {

@@ -2,7 +2,7 @@
 #include "chess_piece.hpp"
 
 
-ChessBoard::Board() {
+Board::Board() {
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
         for (unsigned j = 0; j < BOARD_LENGTH; j++) {
             this->board_array[i][j] = nullptr;
@@ -11,17 +11,17 @@ ChessBoard::Board() {
 
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
         this->board_array[1][i] = new Pawn(WHITE, PAWN);
-        *(this->board_array[1][i]).setup();
+        this->board_array[1][i]->setup();
 
-        this->board_array[6][i] = new Pawn(BLACK, PAWN)
-        *(this->board_array[6][i]).setup();
+        this->board_array[6][i] = new Pawn(BLACK, PAWN);
+        this->board_array[6][i]->setup();
     }
 
     setup_rank(WHITE);
     setup_rank(BLACK);
 }
 
-setup_rank(int color) {
+void Board::setup_rank(int color) {
   int rank;
   if (color == WHITE) {
       rank = 0;
@@ -39,33 +39,33 @@ setup_rank(int color) {
   this->board_array[rank][7] = new Rook(color, ROOK);
 }
 
-Piece* ChessBoard::access_field(int rank, int file) {
+Piece* Board::access_field(int rank, int file) {
     return this->board_array[rank][file];
 }
 
-void ChessBoard::remove_piece(int rank, int file) {
+void Board::remove_piece(int rank, int file) {
     delete this->board_array[rank][file];
     this->board_array[rank][file] = nullptr;
 }
 
-void ChessBoard::move_piece(int source_rank, int source_file, int target_rank, int target_file) {
+void Board::move_piece(int source_rank, int source_file, int target_rank, int target_file) {
     this->board_array[target_rank][target_file] = this->board_array[source_rank][source_file];
     this->board_array[source_rank][source_file] = nullptr;
 }
 
-bool ChessBoard::set_piece(int rank, int file, Piece * piece) {
+void Board::set_piece(int rank, int file, Piece * piece) {
     if (piece == nullptr) {
-        return false;
+        return;
     }
     this->board_array[rank][file] = piece;
 
-    return true;
+    return;
 }
 
-void ChessBoard::clean_up() {
+void Board::clean_up() {
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
         for (unsigned j = 0; j < BOARD_LENGTH; j++) {
-            if (board_arry[i][j] != nullptr) {
+            if (this->board_array[i][j] != nullptr) {
                 delete board_array[i][j];
             }
         }

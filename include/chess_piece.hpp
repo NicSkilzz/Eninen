@@ -1,4 +1,5 @@
 #include <vector>
+#include "chess_board.hpp"
 
 enum piece_t {
     PAWN,
@@ -21,6 +22,8 @@ class Piece {
 
     protected:
         std::vector<Move*> moves;
+        int current_rank;
+        int current_file;
 
     public:
         Piece(int color, piece_t type);
