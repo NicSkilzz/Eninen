@@ -82,12 +82,3 @@ void Queen::setup() {
         this->moves.push_back(new Move(-i, -i));
     }
 }
-
-
-bool Piece::can_move() const {
-    for (unsigned i = 0; i < this->moves.size(); i++) {
-        int new_file = this->moves[i]->get_file_change();
-        int new_rank = this->moves[i]->get_rank_change();
-    }
-    return false;
-}
