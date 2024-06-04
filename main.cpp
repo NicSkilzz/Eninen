@@ -2,6 +2,12 @@
 using namespace std;
 
 int main() {
-  cout << "Hello World!";
-  return 0;
+    bool running = true;
+
+    while (running) {
+
+
+    }
+    clean_up();
+    return 0;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "chess_piece.h"
+#include "chess_piece.hpp"
 
 class Move {
     private:
