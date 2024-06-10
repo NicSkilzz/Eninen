@@ -6,8 +6,7 @@ bool do_move(Board * board, int color);
 
 int main() {
     bool running = true;
-    Board board();
-    board.setup()
+    Board * board = new Board();
 
     int color;
     while (running) {
@@ -20,6 +19,7 @@ int main() {
         if ((!running) || check_mate()) break;
     }
     board.clean_up();
+    delete board;
     return 0;
 }
 
