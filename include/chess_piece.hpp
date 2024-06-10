@@ -1,5 +1,6 @@
 #include <vector>
 #include "chess_board.hpp"
+#include "moves.hpp"
 
 enum piece_t {
     PAWN,
