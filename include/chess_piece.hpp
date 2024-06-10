@@ -22,54 +22,61 @@ class Piece {
 
     protected:
         std::vector<Move*> moves;
+        Board * board;
         int current_rank;
         int current_file;
 
     public:
-        Piece(int color, piece_t type);
+        Piece(int color, piece_t type, Board * board);
         virtual void setup() = 0;
-        const int get_color();
-        const int get_type();
+
+        const int get_color() const;
+        const int get_type() const;
+        const int get_rank() const;
+        const int get_file() const;
+
+        const bool movable() const;
+        const bool check_move(Move * move) const;
 };
 
 
 class Pawn: public Piece {
     public:
-        Pawn(int color, piece_t type);
+        Pawn(int color, piece_t type, Board * board);
         virtual void setup() override;
 };
 
 
 class Rook: public Piece {
     public:
-        Rook(int color, piece_t type);
+        Rook(int color, piece_t type, Board * board);
         virtual void setup() override;
 };
 
 
 class Bishop: public Piece {
     public:
-        Bishop(int color, piece_t type);
+        Bishop(int color, piece_t type, Board * board);
         virtual void setup() override;
 };
 
 
 class Knight: public Piece {
     public:
-        Knight(int color, piece_t type);
+        Knight(int color, piece_t type, Board * board);
         virtual void setup() override;
 };
 
 
 class King: public Piece {
     public:
-        King(int color, piece_t type);
+        King(int color, piece_t type, Board * board);
         virtual void setup() override;
 };
 
 
 class Queen: public Piece {
     public:
-        Queen(int color, piece_t type);
+        Queen(int color, piece_t type, Board * board);
         virtual void setup() override;
 };

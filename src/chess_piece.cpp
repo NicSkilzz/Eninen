@@ -7,6 +7,40 @@ Piece::Piece(int color, piece_t type): color(color), type(type) {
     this->setup();
 }
 
+bool Piece::movable() const {
+    for (unsigned i = 0; i < this->moves.size(); i++) {
+        this->check_move(Move * move);
+    }
+}
+
+bool Piece::check_move(Move * move) const {
+    int new_rank = this->get_rank + move->get_rank_change();
+    int new_file = this->get_file + move->get_file_change();
+
+    if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
+        return false;
+    }
+
+    Piece * current_field = this->board->board_array[new_rank][new_file];
+
+    if (current_field = nullptr) {
+        return true;
+    }
+
+    if (current_field->get_color == this->get_color) {
+        return false;
+    }
+
+    //check if king can be targeted
+
+    return true;
+}
+
+int Piece::get_color() const { return this->color; }
+int Piece::get_type() const { return this->type; }
+int Piece::get_rank() const { return this->rank; }
+int Piece::get_file() const { return this->file; }
+
 Pawn::Pawn(int color, piece_t type): Piece(color, type) {}
 
 void Pawn::setup() {
