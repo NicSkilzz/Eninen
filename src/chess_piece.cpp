@@ -3,31 +3,31 @@
 #include "../include/moves.hpp"
 #include "../include/macros.hpp"
 
-Piece::Piece(int color, piece_t type): color(color), type(type) {
+Piece::Piece(int color, piece_t type, Board* board): color(color), type(type) {
     this->setup();
 }
 
-bool Piece::movable() const {
+const bool Piece::movable() const {
     for (unsigned i = 0; i < this->moves.size(); i++) {
-        this->check_move(Move * move);
+        this->check_move(moves[i]);
     }
 }
 
-bool Piece::check_move(Move * move) const {
-    int new_rank = this->get_rank + move->get_rank_change();
-    int new_file = this->get_file + move->get_file_change();
+const bool Piece::check_move(Move * move) const {
+    int new_rank = this->get_rank() + move->get_rank_change();
+    int new_file = this->get_file() + move->get_file_change();
 
     if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
         return false;
     }
 
-    Piece * current_field = this->board->board_array[new_rank][new_file];
+    Piece * current_field = this->board->access_field(new_rank, new_file);
 
     if (current_field = nullptr) {
         return true;
     }
 
-    if (current_field->get_color == this->get_color) {
+    if (current_field->get_color() == this->get_color()) {
         return false;
     }
 
@@ -36,10 +36,10 @@ bool Piece::check_move(Move * move) const {
     return true;
 }
 
-int Piece::get_color() const { return this->color; }
-int Piece::get_type() const { return this->type; }
-int Piece::get_rank() const { return this->rank; }
-int Piece::get_file() const { return this->file; }
+const int Piece::get_color() const { return this->color; }
+const int Piece::get_type() const { return this->type; }
+const int Piece::get_rank() const { return this->current_rank; }
+const int Piece::get_file() const { return this->current_file; }
 
 Pawn::Pawn(int color, piece_t type, Board * board): Piece(color, type, board) {}
 

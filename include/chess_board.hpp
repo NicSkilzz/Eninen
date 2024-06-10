@@ -3,6 +3,7 @@
 #include "chess_piece.hpp"
 
 class Piece;
+class Move;
 
 class Board {
     private:

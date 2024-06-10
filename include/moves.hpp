@@ -1,6 +1,8 @@
 #pragma once
 #include "chess_piece.hpp"
 
+class Board;
+
 class Move {
     private:
         int steps_rank;

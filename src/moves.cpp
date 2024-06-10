@@ -1,5 +1,5 @@
 #pragma once
-#include "moves.hpp"
+#include "../include/moves.hpp"
 
 Move::Move(int steps_rank, int steps_file): steps_rank(steps_rank), steps_file(steps_file) {}
 
