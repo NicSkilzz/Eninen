@@ -1,36 +1,36 @@
 #include "../include/chess_piece.hpp"
 #include "../include/moves.hpp"
 #include "../include/macros.hpp"
+#include <vector>
+
+using std::vector;
 
 Piece::Piece(int color, piece_t type, Board * board): color(color), type(type), board(board) {}
-
-const bool Piece::movable() const {
-    for (unsigned i = 0; i < this->moves.size(); i++) {
-        this->check_move(moves[i]);
-    }
-}
 
 const bool Piece::check_move(Move * move) const {
     int new_rank = this->get_rank() + move->get_rank_change();
     int new_file = this->get_file() + move->get_file_change();
 
-    if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
-        return false;
-    }
+    if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) return false;
 
     Piece * current_field = this->board->access_field(new_rank, new_file);
 
-    if (current_field = nullptr) {
-        return true;
-    }
+    if (current_field = nullptr) return true;
 
-    if (current_field->get_color() == this->get_color()) {
-        return false;
-    }
+    if (current_field->get_color() == this->get_color()) return false;
 
     //check if king can be targeted
 
     return true;
+}
+
+const vector<Move*> Piece::usable_moves() const {
+    vector<Move*> moves;
+
+    for (unsigned i = 0; i < this->moves.size(); i++) {
+        if(this->check_move(moves[i])) moves.push_back(moves[i]);
+    }
+    return moves;
 }
 
 const int Piece::get_color() const { return this->color; }
@@ -43,10 +43,12 @@ Pawn::Pawn(int color, piece_t type, Board * board): Piece(color, type, board) {
 }
 
 void Pawn::setup() {
-    this->moves.push_back(new Move(1, 0));
-    this->moves.push_back(new Move(2, 0));      //First step
-    this->moves.push_back(new Move(1, 1));
-    this->moves.push_back(new Move(1, -1));
+    int i = 1;
+    if (this->get_color() == WHITE) i = -1;
+    this->moves.push_back(new Move(i * 1, 0));
+    this->moves.push_back(new Move(i * 2, 0));      //First step
+    this->moves.push_back(new Move(i * 1, 1));
+    this->moves.push_back(new Move(i * 1, -1));
 }
 
 
