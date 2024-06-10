@@ -1,11 +1,8 @@
-#pragma once
 #include "../include/chess_piece.hpp"
 #include "../include/moves.hpp"
 #include "../include/macros.hpp"
 
-Piece::Piece(int color, piece_t type, Board* board): color(color), type(type) {
-    this->setup();
-}
+Piece::Piece(int color, piece_t type, Board * board): color(color), type(type), board(board) {}
 
 const bool Piece::movable() const {
     for (unsigned i = 0; i < this->moves.size(); i++) {
@@ -41,7 +38,9 @@ const int Piece::get_type() const { return this->type; }
 const int Piece::get_rank() const { return this->current_rank; }
 const int Piece::get_file() const { return this->current_file; }
 
-Pawn::Pawn(int color, piece_t type, Board * board): Piece(color, type, board) {}
+Pawn::Pawn(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void Pawn::setup() {
     this->moves.push_back(new Move(1, 0));
@@ -51,7 +50,9 @@ void Pawn::setup() {
 }
 
 
-Rook::Rook(int color, piece_t type, Board * board): Piece(color, type, board) {}
+Rook::Rook(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void Rook::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {
@@ -63,7 +64,9 @@ void Rook::setup() {
 }
 
 
-Bishop::Bishop(int color, piece_t type, Board * board): Piece(color, type, board) {}
+Bishop::Bishop(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void Bishop::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {
@@ -75,7 +78,9 @@ void Bishop::setup() {
 }
 
 
-Knight::Knight(int color, piece_t type, Board * board): Piece(color, type, board) {}
+Knight::Knight(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void Knight::setup() {
     this->moves.push_back(new Move(2, 1));
@@ -89,7 +94,9 @@ void Knight::setup() {
 }
 
 
-King::King(int color, piece_t type, Board * board): Piece(color, type, board) {}
+King::King(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void King::setup() {
     this->moves.push_back(new Move(1, 0));
@@ -105,7 +112,9 @@ void King::setup() {
 }
 
 
-Queen::Queen(int color, piece_t type, Board * board): Piece(color, type, board) {}
+Queen::Queen(int color, piece_t type, Board * board): Piece(color, type, board) {
+    this->setup();
+}
 
 void Queen::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {
