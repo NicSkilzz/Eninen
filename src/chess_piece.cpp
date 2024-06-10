@@ -1,7 +1,7 @@
 #pragma once
-#include "chess_piece.hpp"
-#include "moves.hpp"
-#include "macros.hpp"
+#include "../include/chess_piece.hpp"
+#include "../include/moves.hpp"
+#include "../include/macros.hpp"
 
 Piece::Piece(int color, piece_t type): color(color), type(type) {
     this->setup();

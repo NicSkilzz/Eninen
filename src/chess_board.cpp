@@ -10,10 +10,10 @@ Board::Board() {
     }
 
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
-        this->board_array[1][i] = new Pawn(WHITE, PAWN);
+        this->board_array[1][i] = new Pawn(WHITE, PAWN, this);
         this->board_array[1][i]->setup();
 
-        this->board_array[6][i] = new Pawn(BLACK, PAWN);
+        this->board_array[6][i] = new Pawn(BLACK, PAWN, this);
         this->board_array[6][i]->setup();
     }
 
@@ -26,17 +26,17 @@ void Board::setup_rank(int color) {
   if (color == WHITE) {
       rank = 0;
   } else {
-      rank = 7
+      rank = 7;
   }
 
-  this->board_array[rank][0] = new Rook(color, ROOK);
-  this->board_array[rank][1] = new Knight(color, KNIGHT);
-  this->board_array[rank][2] = new Bishop(color, BISHOP);
-  this->board_array[rank][3] = new Queen(color, QUEEN);
-  this->board_array[rank][4] = new King(color, KING);
-  this->board_array[rank][5] = new Bishop(color, BISHOP);
-  this->board_array[rank][6] = new Knight(color, KNIGHT);
-  this->board_array[rank][7] = new Rook(color, ROOK);
+  this->board_array[rank][0] = new Rook(color, ROOK, this);
+  this->board_array[rank][1] = new Knight(color, KNIGHT, this);
+  this->board_array[rank][2] = new Bishop(color, BISHOP, this);
+  this->board_array[rank][3] = new Queen(color, QUEEN, this);
+  this->board_array[rank][4] = new King(color, KING, this);
+  this->board_array[rank][5] = new Bishop(color, BISHOP, this);
+  this->board_array[rank][6] = new Knight(color, KNIGHT, this);
+  this->board_array[rank][7] = new Rook(color, ROOK, this);
 }
 
 Piece* Board::access_field(int rank, int file) {
