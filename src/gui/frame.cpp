@@ -1,7 +1,6 @@
 #include <wx/wx.h>
+
 #include "../../include/chess_board.hpp"
-#include "../../include/chess_piece.hpp"
-// #include "../../include/moves.hpp"
 
 class wxWidgetsApp : public wxApp {
  public:
@@ -21,7 +20,6 @@ class ChessBoardFrame : public wxFrame {
 wxBEGIN_EVENT_TABLE(ChessBoardFrame, wxFrame)
 EVT_PAINT(ChessBoardFrame::OnPaint)
 wxEND_EVENT_TABLE()
-
 wxIMPLEMENT_APP(wxWidgetsApp);
 
 bool wxWidgetsApp::OnInit() {
@@ -32,7 +30,10 @@ bool wxWidgetsApp::OnInit() {
 }
 
 ChessBoardFrame::ChessBoardFrame(Board* board)
-    : wxFrame(NULL, wxID_ANY, "Chess Board", wxDefaultPosition, wxSize(800, 800)): board(board) {}
+    : wxFrame(NULL, wxID_ANY, "Chess Board", wxDefaultPosition,
+              wxSize(800, 800)) {
+  this->board = board;
+}
 
 void ChessBoardFrame::OnPaint(wxPaintEvent& event) {
   wxPaintDC dc(this);
@@ -52,9 +53,11 @@ void ChessBoardFrame::OnPaint(wxPaintEvent& event) {
 
       dc.DrawRectangle(col * squareSize, row * squareSize, squareSize,
                        squareSize);
-      dc.SetFont(wxFont(40, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-      dc.DrawLabel("h", wxRect(col * squareSize + squareSize / 4, row * squareSize + squareSize / 4, squareSize,
-                       squareSize));
+      dc.SetFont(wxFont(40, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                        wxFONTWEIGHT_NORMAL));
+      dc.DrawLabel("h", wxRect(col * squareSize + squareSize / 4,
+                               row * squareSize + squareSize / 4, squareSize,
+                               squareSize));
       isWhite = !isWhite;
     }
     isWhite = !isWhite;
