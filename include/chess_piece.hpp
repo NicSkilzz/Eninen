@@ -3,6 +3,8 @@
 #include "chess_board.hpp"
 #include "moves.hpp"
 
+class Board;
+
 enum piece_t {
     PAWN,
     ROOK,

@@ -2,6 +2,8 @@
 #include "macros.hpp"
 #include "chess_piece.hpp"
 
+class Piece;
+
 class Board {
     private:
         Piece* board_array[BOARD_LENGTH][BOARD_LENGTH];
