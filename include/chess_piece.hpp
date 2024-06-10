@@ -39,7 +39,7 @@ class Piece {
         const int get_rank() const;
         const int get_file() const;
 
-        const bool movable() const;
+        const std::vector<Move*> usable_moves() const;
         const bool check_move(Move * move) const;
 };
 
