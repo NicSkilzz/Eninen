@@ -41,7 +41,7 @@ int Piece::get_type() const { return this->type; }
 int Piece::get_rank() const { return this->rank; }
 int Piece::get_file() const { return this->file; }
 
-Pawn::Pawn(int color, piece_t type): Piece(color, type) {}
+Pawn::Pawn(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void Pawn::setup() {
     this->moves.push_back(new Move(1, 0));
@@ -51,7 +51,7 @@ void Pawn::setup() {
 }
 
 
-Rook::Rook(int color, piece_t type): Piece(color, type) {}
+Rook::Rook(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void Rook::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {
@@ -63,7 +63,7 @@ void Rook::setup() {
 }
 
 
-Bishop::Bishop(int color, piece_t type): Piece(color, type) {}
+Bishop::Bishop(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void Bishop::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {
@@ -75,7 +75,7 @@ void Bishop::setup() {
 }
 
 
-Knight::Knight(int color, piece_t type): Piece(color, type) {}
+Knight::Knight(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void Knight::setup() {
     this->moves.push_back(new Move(2, 1));
@@ -89,7 +89,7 @@ void Knight::setup() {
 }
 
 
-King::King(int color, piece_t type): Piece(color, type) {}
+King::King(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void King::setup() {
     this->moves.push_back(new Move(1, 0));
@@ -105,7 +105,7 @@ void King::setup() {
 }
 
 
-Queen::Queen(int color, piece_t type): Piece(color, type) {}
+Queen::Queen(int color, piece_t type, Board * board): Piece(color, type, board) {}
 
 void Queen::setup() {
     for (unsigned i = 1; i < BOARD_LENGTH; i++) {

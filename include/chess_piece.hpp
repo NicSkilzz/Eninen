@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "chess_board.hpp"
 #include "moves.hpp"
