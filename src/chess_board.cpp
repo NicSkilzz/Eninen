@@ -1,5 +1,5 @@
-#include "chess_board.hpp"
-#include "chess_piece.hpp"
+#include "../include/chess_board.hpp"
+#include "../include/chess_piece.hpp"
 
 
 Board::Board() {
