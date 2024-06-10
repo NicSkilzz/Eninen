@@ -12,6 +12,8 @@ Pawn::Pawn(int color, piece_t type): Piece(color, type) {}
 void Pawn::setup() {
     this->moves.push_back(new Move(1, 0));
     this->moves.push_back(new Move(2, 0));      //First step
+    this->moves.push_back(new Move(1, 1));
+    this->moves.push_back(new Move(1, -1));
 }
 
 
