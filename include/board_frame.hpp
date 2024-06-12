@@ -1,7 +1,8 @@
 #pragma once
 #include <wx/wx.h>
-#include "chess_board.hpp"
+
 #include "board_panel.hpp"
+#include "chess_board.hpp"
 
 class ChessBoardFrame : public wxFrame {
  public:

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "../../include/board_frame.hpp"
-#include "../../include/chess_board.hpp"
+#include "board_frame.hpp"
+#include "chess_board.hpp"
 
 using std::string;
 

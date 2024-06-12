@@ -1,10 +1,10 @@
-#include "../include/chess_piece.hpp"
+#include "chess_piece.hpp"
 
 #include <iostream>
 #include <vector>
 
-#include "../include/macros.hpp"
-#include "../include/move.hpp"
+#include "macros.hpp"
+#include "move.hpp"
 
 using std::vector;
 

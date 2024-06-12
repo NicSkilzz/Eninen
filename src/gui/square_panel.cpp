@@ -1,11 +1,11 @@
-#include "../../include/square_panel.hpp"
+#include "square_panel.hpp"
 
 #include <wx/wx.h>
 
 #include <iostream>
 #include <string>
 
-#include "../../include/chess_piece.hpp"
+#include "chess_piece.hpp"
 
 SquarePanel::SquarePanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
   displayText = new wxStaticText(this, wxID_ANY, " ");

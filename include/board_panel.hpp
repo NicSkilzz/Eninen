@@ -1,8 +1,8 @@
 #pragma once
 #include <wx/wx.h>
+
 #include "chess_board.hpp"
 #include "square_panel.hpp"
-
 
 class ChessBoardPanel : public wxPanel {
  public:
