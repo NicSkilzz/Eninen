@@ -1,3 +1,4 @@
+#pragma once
 #include <wx/wx.h>
 #include "chess_board.hpp"
 #include "board_panel.hpp"

@@ -7,5 +7,5 @@ if(wxWidgets_USE_FILE) # not defined in CONFIG mode
     include(${wxWidgets_USE_FILE})
 endif()
 
-add_executable(chess src/gui/app.cpp src/gui/frame.cpp src/gui/board_panel.cpp src/chess_board.cpp src/chess_piece src/moves)
+add_executable(chess src/gui/app.cpp src/gui/frame.cpp src/gui/square_panel.cpp src/gui/board_panel.cpp src/chess_board.cpp src/chess_piece.cpp src/moves.cpp)
 target_link_libraries(chess ${wxWidgets_LIBRARIES})

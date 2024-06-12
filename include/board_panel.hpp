@@ -1,13 +1,14 @@
+#pragma once
 #include <wx/wx.h>
+#include "chess_board.hpp"
+#include "square_panel.hpp"
 
 class ChessBoardPanel : public wxPanel {
  public:
   ChessBoardPanel(wxWindow* parent, Board* board);
 
- protected:
-  void OnPaint(wxPaintEvent& event);
-
  private:
+  void OnPanelClick(wxMouseEvent& event, int rank, int file);
   Board* board;
-  DECLARE_EVENT_TABLE()
+  SquarePanel* squarePanels[8][8];
 };

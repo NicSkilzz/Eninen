@@ -34,7 +34,7 @@ const vector<Move*> Piece::usable_moves() const {
 }
 
 const int Piece::get_color() const { return this->color; }
-const int Piece::get_type() const { return this->type; }
+const piece_t Piece::get_type() const { return this->type; }
 const int Piece::get_rank() const { return this->current_rank; }
 const int Piece::get_file() const { return this->current_file; }
 

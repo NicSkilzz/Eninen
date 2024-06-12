@@ -1,5 +1,6 @@
 #pragma once
 #include "chess_piece.hpp"
+#include "chess_board.hpp"
 
 class Board;
 

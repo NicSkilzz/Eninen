@@ -35,7 +35,7 @@ class Piece {
         virtual void setup() = 0;
 
         const int get_color() const;
-        const int get_type() const;
+        const piece_t get_type() const;
         const int get_rank() const;
         const int get_file() const;
 
