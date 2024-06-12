@@ -11,9 +11,11 @@ Board::Board() {
 
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
         this->board_array[1][i] = new Pawn(WHITE, PAWN, this);
+        this->board_array[1][i]->set_position(1, i);
         this->board_array[1][i]->setup();
 
         this->board_array[6][i] = new Pawn(BLACK, PAWN, this);
+        this->board_array[1][i]->set_position(6, i);
         this->board_array[6][i]->setup();
     }
 
@@ -30,13 +32,21 @@ void Board::setup_rank(int color) {
   }
 
   this->board_array[rank][0] = new Rook(color, ROOK, this);
+  this->board_array[rank][0]->set_position(rank, 0);
   this->board_array[rank][1] = new Knight(color, KNIGHT, this);
+  this->board_array[rank][0]->set_position(rank, 1);
   this->board_array[rank][2] = new Bishop(color, BISHOP, this);
+  this->board_array[rank][0]->set_position(rank, 2);
   this->board_array[rank][4] = new Queen(color, QUEEN, this);
+  this->board_array[rank][0]->set_position(rank, 3);
   this->board_array[rank][3] = new King(color, KING, this);
+  this->board_array[rank][0]->set_position(rank, 4);
   this->board_array[rank][5] = new Bishop(color, BISHOP, this);
+  this->board_array[rank][0]->set_position(rank, 5);
   this->board_array[rank][6] = new Knight(color, KNIGHT, this);
+  this->board_array[rank][0]->set_position(rank, 6);
   this->board_array[rank][7] = new Rook(color, ROOK, this);
+  this->board_array[rank][0]->set_position(rank, 7);
 }
 
 Piece* Board::access_field(int rank, int file) {

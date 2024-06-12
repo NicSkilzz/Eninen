@@ -7,14 +7,13 @@
 #include <vector>
 
 #include "../../include/chess_board.hpp"
+#include "../../include/move.hpp"
 #include "../../include/chess_piece.hpp"
-#include "../../include/moves.hpp"
 #include "../../include/square_panel.hpp"
-
-using std::string;
 
 ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
     : wxPanel(parent, wxID_ANY), board(board) {
+  Move* move;
   const int squareSize = 100;
   for (int rank = 0; rank < 8; rank++) {
     for (int file = 0; file < 8; file++) {
@@ -41,10 +40,9 @@ ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
 void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
   if (this->board->access_field(rank, file) != nullptr) {
     Piece* piece = this->board->access_field(rank, file);
-    std::vector<Move*> usableMoves = piece->usable_moves();
-    // std::vector<int[2]> targetSquares;
-    // for (unsigned i = 0; i < usableMoves.size(); i++) {
-    //   targetSquares.push_back([ piece->get_rank(), 0 ]);
+    // for (int i = 0; i < piece->usable_moves().size(); i++) {
+    //   abc = piece->usable_moves()[i];
+    //   this->squarePanels[rank + move->get_rank_change()][file + move->get_file_change()]->SetBackgroundColour(wxColour(0, 255, 0));
     // }
   }
 }

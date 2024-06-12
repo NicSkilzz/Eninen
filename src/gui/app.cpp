@@ -1,6 +1,9 @@
-#include <wx/wx.h>
 #include "../../include/app.hpp"
+
+#include <wx/wx.h>
+
 #include "../../include/board_frame.hpp"
+#include "../../include/move.hpp"
 
 wxIMPLEMENT_APP(wxWidgetsApp);
 

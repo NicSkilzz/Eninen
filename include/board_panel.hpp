@@ -3,6 +3,7 @@
 #include "chess_board.hpp"
 #include "square_panel.hpp"
 
+
 class ChessBoardPanel : public wxPanel {
  public:
   ChessBoardPanel(wxWindow* parent, Board* board);

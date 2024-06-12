@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "chess_board.hpp"
-#include "moves.hpp"
+#include "move.hpp"
 
 class Board;
 
@@ -38,6 +38,7 @@ class Piece {
         const piece_t get_type() const;
         const int get_rank() const;
         const int get_file() const;
+        void set_position(int rank, int file);
 
         const std::vector<Move*> usable_moves() const;
         const bool check_move(Move * move) const;
