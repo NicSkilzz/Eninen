@@ -1,6 +1,7 @@
 #include "chess_board.hpp"
 #include "chess_piece.hpp"
 
+#include <iostream>
 
 Board::Board() {
     for (unsigned i = 0; i < BOARD_LENGTH; i++) {
@@ -15,7 +16,7 @@ Board::Board() {
         this->board_array[1][i]->setup();
 
         this->board_array[6][i] = new Pawn(BLACK, PAWN, this);
-        this->board_array[1][i]->set_position(6, i);
+        this->board_array[6][i]->set_position(6, i);
         this->board_array[6][i]->setup();
     }
 

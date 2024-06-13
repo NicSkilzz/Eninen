@@ -10,6 +10,8 @@ using std::vector;
 
 Piece::Piece(int color, piece_t type, Board* board)
     : color(color), type(type), board(board) {
+      this->current_rank = 0;
+      this->current_file = 0;
 }
 
 void Piece::set_position(int rank, int file) {
@@ -60,7 +62,7 @@ Pawn::Pawn(int color, piece_t type, Board* board) : Piece(color, type, board) {
 
 void Pawn::setup() {
   int i = 1;
-  if (this->get_color() == WHITE) i = -1;
+  if (this->get_color() == BLACK) i = -1;
   this->moves.push_back(new Move(i * 1, 0));
   this->moves.push_back(new Move(i * 2, 0));  // First step
   this->moves.push_back(new Move(i * 1, 1));

@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 
 #include "board_frame.hpp"
-#include "move.hpp"
+#include "chess_board.hpp"
 
 wxIMPLEMENT_APP(wxWidgetsApp);
 

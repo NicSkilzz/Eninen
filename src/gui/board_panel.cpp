@@ -37,13 +37,42 @@ ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
   }
 }
 
+void ChessBoardPanel::resetHighlights() {
+  for (int rank = 0; rank < 8; rank++) {
+    for (int file = 0; file < 8; file++) {
+      if ((rank + file) % 2 == 0) {
+        this->squarePanels[rank][file]->SetBackgroundColour(wxColour(0, 0, 0));
+      } else {
+        this->squarePanels[rank][file]->SetBackgroundColour(
+            wxColour(255, 255, 255));
+      }
+    }
+  }
+}
+
 void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
+  this->resetHighlights();
   if (this->board->access_field(rank, file) != nullptr) {
     Piece* piece = this->board->access_field(rank, file);
-    // for (int i = 0; i < piece->usable_moves().size(); i++) {
-    //   abc = piece->usable_moves()[i];
-    //   this->squarePanels[rank + move->get_rank_change()][file +
-    //   move->get_file_change()]->SetBackgroundColour(wxColour(0, 255, 0));
-    // }
+    std::cout << "Possible Moves: " << piece->usable_moves().size()
+              << std::endl;
+    for (int i = 0; i < piece->usable_moves().size(); i++) {
+      std::cout << "Move: " << i << std::endl;
+      int rankChange = piece->usable_moves()[i]->get_rank_change();
+      int fileChange = piece->usable_moves()[i]->get_file_change();
+      std::cout << "Rank and File Change: " << rankChange << " - " << fileChange
+                << std::endl;
+      int new_rank = rank + rankChange;
+      int new_file = file + fileChange;
+      if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
+        std::cout << "Illegal Move: Breaking Board barrier" << std::endl;
+      } else {
+        this->squarePanels[rank + rankChange][file + fileChange]
+            ->SetBackgroundColour(wxColour(0, 255, 0));
+      }
+    }
+  } else {
+    std::cout << "Empty Field" << std::endl;
   }
+  std::cout << std::endl;
 }

@@ -10,7 +10,5 @@ class ChessBoardFrame : public wxFrame {
 
  private:
   ChessBoardPanel* m_chessBoardPanel;
-  wxButton* m_button;
   Board* board;
-  void OnButtonClick(wxCommandEvent& event);
 };

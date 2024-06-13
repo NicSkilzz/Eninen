@@ -10,6 +10,7 @@ class ChessBoardPanel : public wxPanel {
 
  private:
   void OnPanelClick(wxMouseEvent& event, int rank, int file);
+  void resetHighlights();
   Board* board;
   SquarePanel* squarePanels[8][8];
 };
