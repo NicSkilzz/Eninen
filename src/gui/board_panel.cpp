@@ -2,6 +2,7 @@
 
 #include <wx/wx.h>
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,6 +15,9 @@
 ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
     : wxPanel(parent, wxID_ANY), board(board) {
   // Move* move;
+  this->selectedPanel = nullptr;
+  this->selectedPiece = nullptr;
+  this->highlightedPanels;
   const int squareSize = 100;
   for (int rank = 0; rank < 8; rank++) {
     for (int file = 0; file < 8; file++) {
@@ -37,7 +41,15 @@ ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
   }
 }
 
+void ChessBoardPanel::movePiece(Piece* piece, int targetRank, int targetFile) {
+  int sourceRank = piece->get_rank();
+  int sourceFile = piece->get_file();
+  this->squarePanels[sourceRank][sourceFile]->setPieceType(nullptr);
+  this->squarePanels[targetRank][targetFile]->setPieceType(piece);
+}
+
 void ChessBoardPanel::resetHighlights() {
+  this->highlightedPanels = {};
   for (int rank = 0; rank < 8; rank++) {
     for (int file = 0; file < 8; file++) {
       if ((rank + file) % 2 == 0) {
@@ -50,29 +62,56 @@ void ChessBoardPanel::resetHighlights() {
   }
 }
 
-void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
-  this->resetHighlights();
-  if (this->board->access_field(rank, file) != nullptr) {
-    Piece* piece = this->board->access_field(rank, file);
-    std::cout << "Possible Moves: " << piece->usable_moves().size()
+void ChessBoardPanel::selectPanel(int rank, int file) {
+  this->selectedPanel = this->squarePanels[rank][file];
+  this->selectedPiece = this->board->access_field(rank, file);
+}
+
+void ChessBoardPanel::highlightPossibleMoves(int sourceRank, int sourceFile) {
+  Piece* piece = this->board->access_field(sourceRank, sourceFile);
+  std::cout << "Possible Moves: " << piece->usable_moves().size() << std::endl;
+  for (int i = 0; i < piece->usable_moves().size(); i++) {
+    std::cout << "Move: " << i << std::endl;
+    int rankChange = piece->usable_moves()[i]->get_rank_change();
+    int fileChange = piece->usable_moves()[i]->get_file_change();
+    std::cout << "Rank and File Change: " << rankChange << " - " << fileChange
               << std::endl;
-    for (int i = 0; i < piece->usable_moves().size(); i++) {
-      std::cout << "Move: " << i << std::endl;
-      int rankChange = piece->usable_moves()[i]->get_rank_change();
-      int fileChange = piece->usable_moves()[i]->get_file_change();
-      std::cout << "Rank and File Change: " << rankChange << " - " << fileChange
-                << std::endl;
-      int new_rank = rank + rankChange;
-      int new_file = file + fileChange;
-      if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
-        std::cout << "Illegal Move: Breaking Board barrier" << std::endl;
-      } else {
-        this->squarePanels[rank + rankChange][file + fileChange]
-            ->SetBackgroundColour(wxColour(0, 255, 0));
-      }
+    int new_rank = sourceRank + rankChange;
+    int new_file = sourceFile + fileChange;
+    if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
+      std::cout << "Illegal Move: Breaking Board barrier" << std::endl;
+    } else {
+      this->squarePanels[sourceRank + rankChange][sourceFile + fileChange]
+          ->SetBackgroundColour(wxColour(0, 255, 0));
+      this->highlightedPanels.push_back(
+          this->squarePanels[sourceRank + rankChange][sourceFile + fileChange]);
     }
+  }
+}
+
+void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
+  Piece* piece = this->board->access_field(rank, file);
+  if (this->selectedPanel != nullptr &&
+      std::find(this->highlightedPanels.begin(), this->highlightedPanels.end(),
+                this->squarePanels[rank][file]) !=
+          this->highlightedPanels.end()) {
+    std::cout << "Executing move" << std::endl;
+    // try to execute move
+    int currentPieceRank = this->selectedPiece->get_rank();
+    int currentPieceFile = this->selectedPiece->get_file();
+    this->board->move_piece(currentPieceRank, currentPieceFile, rank, file);
+    std::cout << "Moving visually" << std::endl;
+    this->movePiece(this->selectedPiece, rank, file);
+    this->resetHighlights();
   } else {
-    std::cout << "Empty Field" << std::endl;
+    // highlight possible moves
+    this->resetHighlights();
+    this->selectPanel(rank, file);
+    if (this->board->access_field(rank, file) != nullptr) {
+      this->highlightPossibleMoves(rank, file);
+    } else {
+      std::cout << "Empty Field" << std::endl;
+    }
   }
   std::cout << std::endl;
 }

@@ -62,6 +62,7 @@ void Board::remove_piece(int rank, int file) {
 void Board::move_piece(int source_rank, int source_file, int target_rank, int target_file) {
     this->board_array[target_rank][target_file] = this->board_array[source_rank][source_file];
     this->board_array[source_rank][source_file] = nullptr;
+    // TODO: update piece rank and file
 }
 
 void Board::set_piece(int rank, int file, Piece * piece) {
