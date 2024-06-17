@@ -41,11 +41,13 @@ ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
   }
 }
 
-void ChessBoardPanel::movePiece(Piece* piece, int targetRank, int targetFile) {
-  int sourceRank = piece->get_rank();
-  int sourceFile = piece->get_file();
-  this->squarePanels[sourceRank][sourceFile]->setPieceType(nullptr);
-  this->squarePanels[targetRank][targetFile]->setPieceType(piece);
+void ChessBoardPanel::updateBoard() {
+  for (int rank = 0; rank < 8; rank++) {
+    for (int file = 0; file < 8; file++) {
+      this->squarePanels[rank][file]->setPieceType(
+          board->access_field(rank, file));
+    }
+  }
 }
 
 void ChessBoardPanel::resetHighlights() {
@@ -101,7 +103,7 @@ void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
     int currentPieceFile = this->selectedPiece->get_file();
     this->board->move_piece(currentPieceRank, currentPieceFile, rank, file);
     std::cout << "Moving visually" << std::endl;
-    this->movePiece(this->selectedPiece, rank, file);
+    this->updateBoard();
     this->resetHighlights();
   } else {
     // highlight possible moves

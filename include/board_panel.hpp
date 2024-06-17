@@ -15,7 +15,7 @@ class ChessBoardPanel : public wxPanel {
   void highlightPossibleMoves(int sourceRank, int sourceFile);
   void resetHighlights();
   void selectPanel(int rank, int file);
-  void movePiece(Piece* piece, int targetRank, int targetFile);
+  void updateBoard();
   Board* board;
   SquarePanel* squarePanels[8][8];
   SquarePanel* selectedPanel;
