@@ -38,10 +38,10 @@ void Board::setup_rank(int color) {
   this->board_array[rank][1]->set_position(rank, 1);
   this->board_array[rank][2] = new Bishop(color, BISHOP, this);
   this->board_array[rank][2]->set_position(rank, 2);
-  this->board_array[rank][4] = new Queen(color, QUEEN, this);
-  this->board_array[rank][4]->set_position(rank, 3);
   this->board_array[rank][3] = new King(color, KING, this);
-  this->board_array[rank][3]->set_position(rank, 4);
+  this->board_array[rank][3]->set_position(rank, 3);
+  this->board_array[rank][4] = new Queen(color, QUEEN, this);
+  this->board_array[rank][4]->set_position(rank, 4);
   this->board_array[rank][5] = new Bishop(color, BISHOP, this);
   this->board_array[rank][5]->set_position(rank, 5);
   this->board_array[rank][6] = new Knight(color, KNIGHT, this);
