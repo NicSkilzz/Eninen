@@ -103,6 +103,7 @@ void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
     // try to execute move
     int currentPieceRank = this->selectedPiece->get_rank();
     int currentPieceFile = this->selectedPiece->get_file();
+    std::cout << "got rank and file of piece" << std::endl;
     this->board->move_piece(currentPieceRank, currentPieceFile, rank, file);
     std::cout << "Moving visually" << std::endl;
     this->updateBoard();

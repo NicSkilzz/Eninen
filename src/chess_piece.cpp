@@ -15,6 +15,9 @@ Piece::Piece(int color, piece_t type, Board* board)
 }
 
 void Piece::set_position(int rank, int file) {
+    std::cout << "In set_positino" << std::endl;
+    std::cout << this->current_rank << "vs" << rank << std::endl;
+    std::cout << this->current_file << "vs" << file << std::endl;
     this->current_rank = rank;
     this->current_file = file;
 }
