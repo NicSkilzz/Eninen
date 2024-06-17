@@ -35,19 +35,19 @@ void Board::setup_rank(int color) {
   this->board_array[rank][0] = new Rook(color, ROOK, this);
   this->board_array[rank][0]->set_position(rank, 0);
   this->board_array[rank][1] = new Knight(color, KNIGHT, this);
-  this->board_array[rank][0]->set_position(rank, 1);
+  this->board_array[rank][1]->set_position(rank, 1);
   this->board_array[rank][2] = new Bishop(color, BISHOP, this);
-  this->board_array[rank][0]->set_position(rank, 2);
+  this->board_array[rank][2]->set_position(rank, 2);
   this->board_array[rank][4] = new Queen(color, QUEEN, this);
-  this->board_array[rank][0]->set_position(rank, 3);
+  this->board_array[rank][4]->set_position(rank, 3);
   this->board_array[rank][3] = new King(color, KING, this);
-  this->board_array[rank][0]->set_position(rank, 4);
+  this->board_array[rank][3]->set_position(rank, 4);
   this->board_array[rank][5] = new Bishop(color, BISHOP, this);
-  this->board_array[rank][0]->set_position(rank, 5);
+  this->board_array[rank][5]->set_position(rank, 5);
   this->board_array[rank][6] = new Knight(color, KNIGHT, this);
-  this->board_array[rank][0]->set_position(rank, 6);
+  this->board_array[rank][6]->set_position(rank, 6);
   this->board_array[rank][7] = new Rook(color, ROOK, this);
-  this->board_array[rank][0]->set_position(rank, 7);
+  this->board_array[rank][7]->set_position(rank, 7);
 }
 
 Piece* Board::access_field(int rank, int file) {
@@ -62,7 +62,7 @@ void Board::remove_piece(int rank, int file) {
 void Board::move_piece(int source_rank, int source_file, int target_rank, int target_file) {
     this->board_array[target_rank][target_file] = this->board_array[source_rank][source_file];
     this->board_array[source_rank][source_file] = nullptr;
-    // TODO: update piece rank and file
+    this->board_array[target_rank][target_file]->set_position(target_rank, target_rank);
 }
 
 void Board::set_piece(int rank, int file, Piece * piece) {

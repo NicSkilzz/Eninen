@@ -78,6 +78,8 @@ void ChessBoardPanel::highlightPossibleMoves(int sourceRank, int sourceFile) {
     int fileChange = piece->usable_moves()[i]->get_file_change();
     std::cout << "Rank and File Change: " << rankChange << " - " << fileChange
               << std::endl;
+    std::cout << "Source Rank and File: " << sourceRank << " - " << sourceFile
+              << std::endl;
     int new_rank = sourceRank + rankChange;
     int new_file = sourceFile + fileChange;
     if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
