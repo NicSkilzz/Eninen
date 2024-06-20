@@ -14,21 +14,20 @@ SquarePanel::SquarePanel(wxWindow* parent, int rank, int file, int color)
   // Set inital background color
   this->remove_highlight();
 
-  // Create text that is the piece icon for now
-  display_text = new wxStaticText(this, wxID_ANY, " ");
-  display_text->SetPosition(wxPoint(0, 0));
-  display_text->SetFont(wxFont(33, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                               wxFONTWEIGHT_NORMAL));
+  // Create bitmaps to later on display the piece .pngs
+  wxBitmap bitmap(60, 60, 32);
+  display_bitmap = new wxStaticBitmap(this, wxID_ANY, bitmap, wxPoint(50, 50));
+  display_bitmap->SetPosition(wxPoint(0, 0));
 
-  // Add the text element to the panel
+  // Add the bitmap element to the panel
   wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-  sizer->Add(display_text, 1,
+  sizer->Add(display_bitmap, 1,
              wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
   SetSizerAndFit(sizer);
-  display_text->SetMinSize(wxSize(100, 100));
+  display_bitmap->SetMinSize(wxSize(100, 100));
 
   // Bind the OnClick method
-  display_text->Bind(wxEVT_LEFT_DOWN, [=](wxMouseEvent& event) {
+  display_bitmap->Bind(wxEVT_LEFT_DOWN, [=](wxMouseEvent& event) {
     static_cast<ChessBoardPanel*>(parent)->OnPanelClick(event, rank, file);
   });
 }
@@ -41,19 +40,12 @@ void SquarePanel::remove_highlight() {
   if (this->color == WHITE) {
     this->SetBackgroundColour(wxColour(255, 255, 255));
   } else {
-    this->SetBackgroundColour(wxColour(0, 0, 0));
+    this->SetBackgroundColour(wxColour(118, 150, 86));
   }
 }
 
 void SquarePanel::set_piece_type(Piece* piece) {
-  std::string piece_str = Piece::get_piece_icon(piece);
-  this->display_text->SetLabel(piece_str);
-  
-  if (piece != nullptr) {
-    if (piece->get_color() == WHITE) {
-      this->display_text->SetForegroundColour(wxColour(14737632));
-    } else {
-      this->display_text->SetForegroundColour(wxColour(5263440));
-    }
-  }
+  wxBitmap piece_bitmap = Piece::get_piece_bitmap(piece);
+  this->display_bitmap->SetBitmap(piece_bitmap);
+  this->display_bitmap->Refresh();
 }

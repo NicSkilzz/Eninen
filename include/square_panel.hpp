@@ -33,6 +33,7 @@ class SquarePanel : public wxPanel {
 
  private:
   wxStaticText* display_text;
+  wxStaticBitmap* display_bitmap;
   int rank;
   int file;
   int color;

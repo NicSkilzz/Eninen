@@ -1,5 +1,7 @@
 #include "chess_piece.hpp"
 
+#include <wx/wx.h>
+
 #include <iostream>
 #include <vector>
 
@@ -14,7 +16,47 @@ Piece::Piece(int color, piece_t type, Board* board)
   this->current_file = 0;
 }
 
-std::string Piece::get_piece_icon(Piece* piece) {
+wxBitmap Piece::get_piece_bitmap(Piece* piece) {
+  // No piece -> no bitmap
+  wxBitmap bitmap(60, 60, 32);
+  if (piece == nullptr) {
+    return bitmap;
+  }
+
+  // Piece -> access .png
+  std::string path_to_bitmap = "./../assets/";
+  std::string color_prefix = piece->get_color() == WHITE ? "w_" : "b_";
+  std::string type_suffix;
+  switch (piece->get_type()) {
+    case PAWN:
+      type_suffix = "pawn";
+      break;
+    case QUEEN:
+      type_suffix = "queen";
+      break;
+    case ROOK:
+      type_suffix = "rook";
+      break;
+    case BISHOP:
+      type_suffix = "bishop";
+      break;
+    case KNIGHT:
+      type_suffix = "knight";
+      break;
+    case KING:
+      type_suffix = "king";
+      break;
+
+    default:
+      break;
+  }
+  path_to_bitmap.append(color_prefix).append(type_suffix).append(".png");
+  wxString wx_path_to_bitmap(path_to_bitmap);
+  wxBitmap piece_bitmap(wx_path_to_bitmap, wxBITMAP_TYPE_PNG);
+  return piece_bitmap;
+}
+
+std::string Piece::get_piece_text(Piece* piece) {
   std::string piece_str = " ";
   if (piece == nullptr) {
     piece_str = " ";
