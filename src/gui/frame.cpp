@@ -12,8 +12,8 @@ ChessBoardFrame::ChessBoardFrame(Board* board)
               wxSize(800, 800)) {
   this->board = board;
 
-  m_chessBoardPanel = new ChessBoardPanel(this, this->board);
-  m_chessBoardPanel->SetSize(800, 800);
-  m_chessBoardPanel->SetPosition(wxPoint(0, 0));
-  m_chessBoardPanel->SetBackgroundColour(wxColour(100, 150, 200));
+  board_panel = new ChessBoardPanel(this, this->board);
+  board_panel->SetSize(800, 800);
+  board_panel->SetPosition(wxPoint(0, 0));
+  board_panel->SetBackgroundColour(wxColour(100, 150, 200));
 }

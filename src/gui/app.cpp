@@ -7,6 +7,13 @@
 
 wxIMPLEMENT_APP(wxWidgetsApp);
 
+/**
+ * @brief Entrypoint of Application. Creates Board and Frame.
+ * Runs in an infinite loop.
+ * 
+ * @return true 
+ * @return false 
+ */
 bool wxWidgetsApp::OnInit() {
   Board* board = new Board();
   ChessBoardFrame* frame = new ChessBoardFrame(board);

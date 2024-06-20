@@ -10,16 +10,45 @@ using std::vector;
 
 Piece::Piece(int color, piece_t type, Board* board)
     : color(color), type(type), board(board) {
-      this->current_rank = 0;
-      this->current_file = 0;
+  this->current_rank = 0;
+  this->current_file = 0;
+}
+
+std::string Piece::get_piece_icon(Piece* piece) {
+  std::string piece_str = " ";
+  if (piece == nullptr) {
+    piece_str = " ";
+  } else {
+    switch (piece->get_type()) {
+      case PAWN:
+        piece_str = "P";
+        break;
+      case QUEEN:
+        piece_str = "Q";
+        break;
+      case ROOK:
+        piece_str = "R";
+        break;
+      case BISHOP:
+        piece_str = "B";
+        break;
+      case KNIGHT:
+        piece_str = "J";
+        break;
+      case KING:
+        piece_str = "K";
+        break;
+
+      default:
+        break;
+    }
+  }
+  return piece_str;
 }
 
 void Piece::set_position(int rank, int file) {
-    std::cout << "In set_positino" << std::endl;
-    std::cout << this->current_rank << "vs" << rank << std::endl;
-    std::cout << this->current_file << "vs" << file << std::endl;
-    this->current_rank = rank;
-    this->current_file = file;
+  this->current_rank = rank;
+  this->current_file = file;
 }
 
 const bool Piece::check_move(Move* move) const {

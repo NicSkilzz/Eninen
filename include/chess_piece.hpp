@@ -3,6 +3,8 @@
 #include "chess_board.hpp"
 #include "move.hpp"
 
+#include <string>
+
 class Board;
 
 enum piece_t {
@@ -39,6 +41,7 @@ class Piece {
         const int get_rank() const;
         const int get_file() const;
         void set_position(int rank, int file);
+        static std::string get_piece_icon(Piece* piece);
 
         const std::vector<Move*> usable_moves() const;
         const bool check_move(Move * move) const;
