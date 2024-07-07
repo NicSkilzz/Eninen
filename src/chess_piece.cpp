@@ -2,6 +2,8 @@
 
 #include <wx/wx.h>
 
+#include <array>
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -97,19 +99,72 @@ const bool Piece::check_move(Move* move) const {
   int new_rank = this->get_rank() + move->get_rank_change();
   int new_file = this->get_file() + move->get_file_change();
 
+  // board boundaries
   if (new_rank > 7 || new_rank < 0 || new_file > 7 || new_file < 0) {
     return false;
   }
 
-  Piece* current_field = this->board->access_field(new_rank, new_file);
+  Piece* target_field = this->board->access_field(new_rank, new_file);
 
-  if (current_field == nullptr) {
-    return true;
-  }
-
-  if (current_field->get_color() == this->get_color()) {
+  // target field is of opposite color
+  if (target_field != nullptr &&
+      target_field->get_color() == this->get_color()) {
     return false;
   }
+
+  // Pawn only capturing diagonally
+  if (std::abs(current_rank - new_rank) == std::abs(current_file - new_file) &&
+      this->type == PAWN && target_field == nullptr) {
+    return false;
+  }
+
+  // Pawn not capturing straight
+
+  // Pawn and king special moves
+
+  // Checks ...
+
+  vector<std::array<int, 2>> trajectory;
+  // jump
+  if (this->type != KNIGHT) {
+    // straight rank
+    if (current_rank == new_rank) {
+      int direction_factor = new_file < current_file ? -1 : 1;
+      for (int file_change = 1; file_change < std::abs(new_file - current_file);
+           file_change++) {
+        trajectory.push_back(
+            {current_rank, current_file + direction_factor * file_change});
+      }
+      // straight file
+    } else if (current_file == new_file) {
+      int direction_factor = new_rank < current_rank ? -1 : 1;
+      for (int rank_change = 1; rank_change < std::abs(new_rank - current_rank);
+           rank_change++) {
+        trajectory.push_back(
+            {current_rank + direction_factor * rank_change, current_file});
+      }
+      // diagonal
+    } else if (std::abs(current_rank - new_rank) ==
+               std::abs(current_file - new_file)) {
+      int rank_factor = new_rank < current_rank ? -1 : 1;
+      int file_factor = new_file < current_file ? -1 : 1;
+      for (int change = 1; change < std::abs(new_rank - current_rank);
+           change++) {
+        trajectory.push_back({current_rank + rank_factor * change,
+                              current_file + file_factor * change});
+      }
+    }
+  }
+
+  // check if same color piece on trajectory
+  for (int i = 0; i < trajectory.size(); i++) {
+    Piece* on_trajectory =
+        this->board->access_field(trajectory[i][0], trajectory[i][1]);
+    if (on_trajectory != nullptr) {
+      return false;
+    }
+  }
+
   // check if king can be targeted
 
   return true;
