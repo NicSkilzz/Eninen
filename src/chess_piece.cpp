@@ -113,14 +113,49 @@ const bool Piece::check_move(Move* move) const {
   }
 
   // Pawn only capturing diagonally
-  if (std::abs(current_rank - new_rank) == std::abs(current_file - new_file) &&
-      this->type == PAWN && target_field == nullptr) {
-    return false;
+  if (this->type == PAWN) {
+    if (this->has_been_moved && std::abs(this->current_rank - new_rank) == 2) {
+      return false;
+    }
+
+    if (std::abs(this->current_rank - new_rank) ==
+        std::abs(this->current_file - new_file)) {
+      if (target_field == nullptr) {
+        return false;
+      }
+    } else if (target_field != nullptr) {
+      return false;
+    }
+
+    // On Passant
   }
 
-  // Pawn not capturing straight
-
-  // Pawn and king special moves
+  // King special moves
+  if (this->type == KING) {
+    if (this->has_been_moved && std::abs(this->current_file - new_file) == 2) {
+      return false;
+    }
+    // Rochade
+    if (std::abs(this->current_file - new_file) == 2) {
+      int targeted_rook_file = this->current_file - new_file > 0 ? 0 : 7;
+      int targeted_rook_rank = this->color == WHITE ? 0 : 7;
+      Piece* rochade_target =
+          this->board->access_field(targeted_rook_rank, targeted_rook_file);
+      if (rochade_target != nullptr && rochade_target->get_type() == ROOK &&
+            !rochade_target->get_has_been_moved()) {
+        int small_file = std::min(rochade_target->get_file(), this->current_file);
+        int big_file = std::max(rochade_target->get_file(), this->current_file);
+        for (int file = small_file + 1; file < big_file; file++) {
+          if (this->board->access_field(this->current_rank, file) != nullptr) {
+            return false;
+          }
+        }
+        move->set_rochade(rochade_target);
+      } else {
+        return false;
+      }
+    }
+  }
 
   // Checks ...
 
@@ -184,6 +219,8 @@ const int Piece::get_color() const { return this->color; }
 const piece_t Piece::get_type() const { return this->type; }
 const int Piece::get_rank() const { return this->current_rank; }
 const int Piece::get_file() const { return this->current_file; }
+void Piece::set_has_been_moved() { this->has_been_moved = true; }
+const bool Piece::get_has_been_moved() const { return this->has_been_moved; }
 
 Pawn::Pawn(int color, piece_t type, Board* board) : Piece(color, type, board) {
   this->setup();

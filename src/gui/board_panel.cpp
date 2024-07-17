@@ -40,9 +40,11 @@ void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
           this->highlighted_panels.begin(), this->highlighted_panels.end(),
           this->square_panels[rank][file]) != this->highlighted_panels.end()) {
     this->move_seleced_piece_to(rank, file);
-  } else {
+  } else if (this->board->access_field(rank, file) != nullptr && this->board->access_field(rank, file)->get_color() == board->get_current_player()) {
     this->select_panel(rank, file);
     this->highlight_possible_moves(this->board->access_field(rank, file));
+  } else {
+    this->reset_highlights();
   }
 }
 

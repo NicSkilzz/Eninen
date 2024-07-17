@@ -7,6 +7,7 @@
 #include <wx/wx.h>
 
 class Board;
+class Move;
 
 enum piece_t {
     PAWN,
@@ -16,11 +17,6 @@ enum piece_t {
     KING,
     QUEEN,
 };
-
-typedef enum {
-    BLACK,
-    WHITE,
-} type_t;
 
 class Piece {
     private:
@@ -32,6 +28,7 @@ class Piece {
         Board * board;
         int current_rank;
         int current_file;
+        bool has_been_moved = false;
 
     public:
         Piece(int color, piece_t type, Board * board);
@@ -41,6 +38,8 @@ class Piece {
         const piece_t get_type() const;
         const int get_rank() const;
         const int get_file() const;
+        void set_has_been_moved();
+        const bool get_has_been_moved() const;
         void set_position(int rank, int file);
         static std::string get_piece_text(Piece* piece);
         static wxBitmap get_piece_bitmap(Piece* piece);

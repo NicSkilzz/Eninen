@@ -5,3 +5,7 @@ Move::Move(int steps_rank, int steps_file): steps_rank(steps_rank), steps_file(s
 const int Move::get_rank_change() { return this->steps_rank; }
 
 const int Move::get_file_change() { return this->steps_file; }
+
+void Move::set_rochade(Piece* target_rook) {
+    this->rochade_rook = target_rook;
+}
