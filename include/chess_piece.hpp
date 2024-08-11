@@ -7,7 +7,7 @@
 #include <wx/wx.h>
 
 class Board;
-class Move;
+class ChessMove;
 
 enum piece_t {
     PAWN,
@@ -24,7 +24,7 @@ class Piece {
         piece_t type;
 
     protected:
-        std::vector<Move*> moves;
+        std::vector<ChessMove*> moves;
         Board * board;
         int current_rank;
         int current_file;
@@ -33,6 +33,8 @@ class Piece {
     public:
         Piece(int color, piece_t type, Board * board);
         virtual void setup() = 0;
+        virtual void set_en_passant_pawn(Piece* pawn);
+        virtual Piece* get_en_passant_pawn() const;
 
         const int get_color() const;
         const piece_t get_type() const;
@@ -44,8 +46,8 @@ class Piece {
         static std::string get_piece_text(Piece* piece);
         static wxBitmap get_piece_bitmap(Piece* piece);
 
-        const std::vector<Move*> usable_moves() const;
-        const bool check_move(Move * move) const;
+        const std::vector<ChessMove*> get_usable_moves() const;
+        const bool check_move(ChessMove * move) const;
 };
 
 
@@ -53,6 +55,11 @@ class Pawn: public Piece {
     public:
         Pawn(int color, piece_t type, Board * board);
         virtual void setup() override;
+        void set_en_passant_pawn(Piece* pawn);
+        Piece* get_en_passant_pawn() const;
+
+    private:
+        Piece* en_passant_pawn;
 };
 
 

@@ -95,7 +95,7 @@ void Piece::set_position(int rank, int file) {
   this->current_file = file;
 }
 
-const bool Piece::check_move(Move* move) const {
+const bool Piece::check_move(ChessMove* move) const {
   int new_rank = this->get_rank() + move->get_rank_change();
   int new_file = this->get_file() + move->get_file_change();
 
@@ -118,16 +118,29 @@ const bool Piece::check_move(Move* move) const {
       return false;
     }
 
+    // Diagonal Move
     if (std::abs(this->current_rank - new_rank) ==
         std::abs(this->current_file - new_file)) {
-      if (target_field == nullptr) {
+
+      // Aiming at empty square
+      if (target_field == nullptr && this->get_en_passant_pawn() == nullptr) {
         return false;
       }
+
+      // En passant
+      Piece* on_passant_pawn = this->get_en_passant_pawn();
+      std::cout << on_passant_pawn << std::endl;
+      if (on_passant_pawn != nullptr &&
+          this->get_file() + move->get_file_change() !=
+              on_passant_pawn->get_file()) {
+        return false;
+      }
+      std::cout << "3" << std::endl;
+
+      // Running into other piece (straight move)
     } else if (target_field != nullptr) {
       return false;
     }
-
-    // On Passant
   }
 
   // King special moves
@@ -142,8 +155,9 @@ const bool Piece::check_move(Move* move) const {
       Piece* rochade_target =
           this->board->access_field(targeted_rook_rank, targeted_rook_file);
       if (rochade_target != nullptr && rochade_target->get_type() == ROOK &&
-            !rochade_target->get_has_been_moved()) {
-        int small_file = std::min(rochade_target->get_file(), this->current_file);
+          !rochade_target->get_has_been_moved()) {
+        int small_file =
+            std::min(rochade_target->get_file(), this->current_file);
         int big_file = std::max(rochade_target->get_file(), this->current_file);
         for (int file = small_file + 1; file < big_file; file++) {
           if (this->board->access_field(this->current_rank, file) != nullptr) {
@@ -159,6 +173,7 @@ const bool Piece::check_move(Move* move) const {
 
   // Checks ...
 
+  // Check if piece on trajectory
   vector<std::array<int, 2>> trajectory;
   // jump
   if (this->type != KNIGHT) {
@@ -191,7 +206,6 @@ const bool Piece::check_move(Move* move) const {
     }
   }
 
-  // check if same color piece on trajectory
   for (int i = 0; i < trajectory.size(); i++) {
     Piece* on_trajectory =
         this->board->access_field(trajectory[i][0], trajectory[i][1]);
@@ -200,13 +214,11 @@ const bool Piece::check_move(Move* move) const {
     }
   }
 
-  // check if king can be targeted
-
   return true;
 }
 
-const vector<Move*> Piece::usable_moves() const {
-  vector<Move*> feasableMoves;
+const vector<ChessMove*> Piece::get_usable_moves() const {
+  vector<ChessMove*> feasableMoves;
 
   for (unsigned i = 0; i < this->moves.size(); i++) {
     if (this->check_move(this->moves[i]))
@@ -222,6 +234,9 @@ const int Piece::get_file() const { return this->current_file; }
 void Piece::set_has_been_moved() { this->has_been_moved = true; }
 const bool Piece::get_has_been_moved() const { return this->has_been_moved; }
 
+void Piece::set_en_passant_pawn(Piece* pawn) {}
+Piece* Piece::get_en_passant_pawn() const { return nullptr; }
+
 Pawn::Pawn(int color, piece_t type, Board* board) : Piece(color, type, board) {
   this->setup();
 }
@@ -229,11 +244,14 @@ Pawn::Pawn(int color, piece_t type, Board* board) : Piece(color, type, board) {
 void Pawn::setup() {
   int i = 1;
   if (this->get_color() == BLACK) i = -1;
-  this->moves.push_back(new Move(i * 1, 0));
-  this->moves.push_back(new Move(i * 2, 0));  // First step
-  this->moves.push_back(new Move(i * 1, 1));
-  this->moves.push_back(new Move(i * 1, -1));
+  this->moves.push_back(new ChessMove(this, i * 1, 0));
+  this->moves.push_back(new ChessMove(this, i * 2, 0));  // First step
+  this->moves.push_back(new ChessMove(this, i * 1, 1));
+  this->moves.push_back(new ChessMove(this, i * 1, -1));
 }
+
+void Pawn::set_en_passant_pawn(Piece* pawn) { this->en_passant_pawn = pawn; }
+Piece* Pawn::get_en_passant_pawn() const { return this->en_passant_pawn; }
 
 Rook::Rook(int color, piece_t type, Board* board) : Piece(color, type, board) {
   this->setup();
@@ -241,10 +259,10 @@ Rook::Rook(int color, piece_t type, Board* board) : Piece(color, type, board) {
 
 void Rook::setup() {
   for (unsigned i = 1; i < BOARD_LENGTH; i++) {
-    this->moves.push_back(new Move(0, i));
-    this->moves.push_back(new Move(0, -i));
-    this->moves.push_back(new Move(i, 0));
-    this->moves.push_back(new Move(-i, 0));
+    this->moves.push_back(new ChessMove(this, 0, i));
+    this->moves.push_back(new ChessMove(this, 0, -i));
+    this->moves.push_back(new ChessMove(this, i, 0));
+    this->moves.push_back(new ChessMove(this, -i, 0));
   }
 }
 
@@ -255,10 +273,10 @@ Bishop::Bishop(int color, piece_t type, Board* board)
 
 void Bishop::setup() {
   for (unsigned i = 1; i < BOARD_LENGTH; i++) {
-    this->moves.push_back(new Move(i, i));
-    this->moves.push_back(new Move(i, -i));
-    this->moves.push_back(new Move(-i, i));
-    this->moves.push_back(new Move(-i, -i));
+    this->moves.push_back(new ChessMove(this, i, i));
+    this->moves.push_back(new ChessMove(this, i, -i));
+    this->moves.push_back(new ChessMove(this, -i, i));
+    this->moves.push_back(new ChessMove(this, -i, -i));
   }
 }
 
@@ -268,14 +286,14 @@ Knight::Knight(int color, piece_t type, Board* board)
 }
 
 void Knight::setup() {
-  this->moves.push_back(new Move(2, 1));
-  this->moves.push_back(new Move(2, -1));
-  this->moves.push_back(new Move(-2, 1));
-  this->moves.push_back(new Move(-2, -1));
-  this->moves.push_back(new Move(1, 2));
-  this->moves.push_back(new Move(-1, 2));
-  this->moves.push_back(new Move(1, -2));
-  this->moves.push_back(new Move(-1, -2));
+  this->moves.push_back(new ChessMove(this, 2, 1));
+  this->moves.push_back(new ChessMove(this, 2, -1));
+  this->moves.push_back(new ChessMove(this, -2, 1));
+  this->moves.push_back(new ChessMove(this, -2, -1));
+  this->moves.push_back(new ChessMove(this, 1, 2));
+  this->moves.push_back(new ChessMove(this, -1, 2));
+  this->moves.push_back(new ChessMove(this, 1, -2));
+  this->moves.push_back(new ChessMove(this, -1, -2));
 }
 
 King::King(int color, piece_t type, Board* board) : Piece(color, type, board) {
@@ -283,16 +301,16 @@ King::King(int color, piece_t type, Board* board) : Piece(color, type, board) {
 }
 
 void King::setup() {
-  this->moves.push_back(new Move(1, 0));
-  this->moves.push_back(new Move(-1, 0));
-  this->moves.push_back(new Move(0, 1));
-  this->moves.push_back(new Move(0, -1));
-  this->moves.push_back(new Move(1, 1));
-  this->moves.push_back(new Move(-1, 1));
-  this->moves.push_back(new Move(1, -1));
-  this->moves.push_back(new Move(-1, -1));
-  this->moves.push_back(new Move(0, 2));   // Rochade1
-  this->moves.push_back(new Move(0, -2));  // Rochade2
+  this->moves.push_back(new ChessMove(this, 1, 0));
+  this->moves.push_back(new ChessMove(this, -1, 0));
+  this->moves.push_back(new ChessMove(this, 0, 1));
+  this->moves.push_back(new ChessMove(this, 0, -1));
+  this->moves.push_back(new ChessMove(this, 1, 1));
+  this->moves.push_back(new ChessMove(this, -1, 1));
+  this->moves.push_back(new ChessMove(this, 1, -1));
+  this->moves.push_back(new ChessMove(this, -1, -1));
+  this->moves.push_back(new ChessMove(this, 0, 2));   // Rochade1
+  this->moves.push_back(new ChessMove(this, 0, -2));  // Rochade2
 }
 
 Queen::Queen(int color, piece_t type, Board* board)
@@ -302,16 +320,16 @@ Queen::Queen(int color, piece_t type, Board* board)
 
 void Queen::setup() {
   for (unsigned i = 1; i < BOARD_LENGTH; i++) {
-    this->moves.push_back(new Move(0, i));
-    this->moves.push_back(new Move(0, -i));
-    this->moves.push_back(new Move(i, 0));
-    this->moves.push_back(new Move(-i, 0));
+    this->moves.push_back(new ChessMove(this, 0, i));
+    this->moves.push_back(new ChessMove(this, 0, -i));
+    this->moves.push_back(new ChessMove(this, i, 0));
+    this->moves.push_back(new ChessMove(this, -i, 0));
   }
 
   for (unsigned i = 0; i < BOARD_LENGTH; i++) {
-    this->moves.push_back(new Move(i, i));
-    this->moves.push_back(new Move(i, -i));
-    this->moves.push_back(new Move(-i, i));
-    this->moves.push_back(new Move(-i, -i));
+    this->moves.push_back(new ChessMove(this, i, i));
+    this->moves.push_back(new ChessMove(this, i, -i));
+    this->moves.push_back(new ChessMove(this, -i, i));
+    this->moves.push_back(new ChessMove(this, -i, -i));
   }
 }

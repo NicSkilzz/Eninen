@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "chess_board.hpp"
 #include "chess_piece.hpp"
@@ -15,7 +16,6 @@
 ChessBoardPanel::ChessBoardPanel(wxWindow* parent, Board* board)
     : wxPanel(parent, wxID_ANY), board(board), selected_piece(nullptr) {
   const int square_size = 100;
-
   // Create square tiles with set color and piece types
   for (int rank = 0; rank < 8; rank++) {
     for (int file = 0; file < 8; file++) {
@@ -39,7 +39,8 @@ void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
   if (std::find(
           this->highlighted_panels.begin(), this->highlighted_panels.end(),
           this->square_panels[rank][file]) != this->highlighted_panels.end()) {
-    this->move_seleced_piece_to(rank, file);
+    // this->move_seleced_piece_to(rank, file);
+    this->execute_move(this->panel_to_move[this->square_panels[rank][file]]);
   } else if (this->board->access_field(rank, file) != nullptr && this->board->access_field(rank, file)->get_color() == board->get_current_player()) {
     this->select_panel(rank, file);
     this->highlight_possible_moves(this->board->access_field(rank, file));
@@ -48,9 +49,8 @@ void ChessBoardPanel::OnPanelClick(wxMouseEvent& event, int rank, int file) {
   }
 }
 
-void ChessBoardPanel::move_seleced_piece_to(int rank, int file) {
-  this->board->move_piece(selected_piece->get_rank(),
-                          selected_piece->get_file(), rank, file);
+void ChessBoardPanel::execute_move(ChessMove* move) {
+  this->board->execute_move(move);
   this->update_board();
   this->reset_highlights();
 }
@@ -60,13 +60,16 @@ void ChessBoardPanel::highlight_possible_moves(Piece* piece) {
   if (piece == nullptr) {
     return;
   }
-  for (int i = 0; i < piece->usable_moves().size(); i++) {
-    int rank_change = piece->usable_moves()[i]->get_rank_change();
-    int file_change = piece->usable_moves()[i]->get_file_change();
-    int new_rank = piece->get_rank() + rank_change;
-    int new_file = piece->get_file() + file_change;
 
-    this->square_panels[new_rank][new_file]->highlight();
+  std::vector<ChessMove*> usable_moves = piece->get_usable_moves();
+  for (int i = 0; i < usable_moves.size(); i++) {
+    ChessMove* current_move = usable_moves[i];
+    int new_rank = piece->get_rank() + current_move->get_rank_change();
+    int new_file = piece->get_file() + current_move->get_file_change();
+
+    SquarePanel* target_panel = this->square_panels[new_rank][new_file];
+    target_panel->highlight();
+    this->panel_to_move[target_panel] = current_move;
     this->highlighted_panels.push_back(this->square_panels[new_rank][new_file]);
   }
 }
@@ -81,6 +84,7 @@ void ChessBoardPanel::update_board() {
 }
 
 void ChessBoardPanel::reset_highlights() {
+  this->panel_to_move = {};
   this->highlighted_panels = {};
   for (int rank = 0; rank < 8; rank++) {
     for (int file = 0; file < 8; file++) {

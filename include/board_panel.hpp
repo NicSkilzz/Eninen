@@ -2,10 +2,13 @@
 #include <wx/wx.h>
 
 #include <vector>
+#include <map>
+#include <array>
 
 #include "chess_board.hpp"
 #include "chess_piece.hpp"
 #include "square_panel.hpp"
+#include "move.hpp"
 
 /**
  * @brief A large wxPanel that displays a given chess board.
@@ -31,15 +34,8 @@ class ChessBoardPanel : public wxPanel {
    *
    */
   void reset_highlights();
-  /**
-   * @brief Effecively move the currently selected piece
-   * in the Board instance of this class to the desired
-   * location and bring changes to ui.
-   * 
-   * @param rank Target rank for the selected piece.
-   * @param file Target file for the selected piece.
-   */
-  void move_seleced_piece_to(int rank, int file);
+
+  void execute_move(ChessMove* move);
   /**
    * @brief Store, that this piece has been clicked. Important
    * for moving pieces.
@@ -58,4 +54,5 @@ class ChessBoardPanel : public wxPanel {
   SquarePanel* square_panels[8][8];
   Piece* selected_piece;
   std::vector<SquarePanel*> highlighted_panels;
+  std::map<SquarePanel*, ChessMove*> panel_to_move;
 };
